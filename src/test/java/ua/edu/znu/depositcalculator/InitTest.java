@@ -9,15 +9,15 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SmokeTest {
+public class InitTest {
 
     private WebDriver driver;
     private Map<String, Object> vars;
@@ -32,7 +32,7 @@ public class SmokeTest {
     public void setUp() {
         driver = new ChromeDriver();
         js = (JavascriptExecutor) driver;
-        vars = new HashMap<>();
+        vars = new HashMap<String, Object>();
     }
 
     @AfterEach
@@ -41,22 +41,14 @@ public class SmokeTest {
     }
 
     @Test
-    public void smokeTest() {
+    public void initTest() {
         driver.get("https://fin-calc.org.ua/ua/deposit/calculate/");
-        WebElement sum = driver.findElement(By.id("sum"));
-        WebElement term = driver.findElement(By.id("term"));
-        WebElement interest = driver.findElement(By.id("percent"));
-        sum.clear();
-        term.clear();
-        interest.clear();
-        sum.sendKeys("25000");
-        term.sendKeys("12");
-        interest.sendKeys("11");
-        driver.findElement(By.id("i_scheme5")).click();
+        vars.put("dSum", driver.findElement(By.id("sum")).getAttribute("value"));
+        assertEquals(vars.get("dSum").toString(), "25000");
+        assertTrue(driver.findElement(By.id("i_scheme5")).isSelected());
         driver.findElement(By.id("submit")).click();
-        String interestAmount = driver.findElement(By.cssSelector(".finale > .right:nth-child(3)")).getText();
-        String sumWithInterst = driver.findElement(By.cssSelector(".finale > .right:nth-child(4)")).getText();
-        assertEquals("2750.04", interestAmount);
-        assertEquals("27750.04", sumWithInterst);
+        vars.put("dSumRes", driver.findElement(By.cssSelector(".tresult:nth-child(7) tr:nth-child(2) span")).getText());
+        assertEquals(vars.get("dSumRes").toString(), vars.get("dSum").toString());
+        System.out.println("Сума депозиту складає " + vars.get("dSum").toString());
     }
 }
