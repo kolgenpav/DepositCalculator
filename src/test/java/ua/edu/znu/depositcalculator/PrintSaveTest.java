@@ -12,10 +12,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -48,11 +50,16 @@ public class PrintSaveTest {
     }
 
     public String waitForWindow(int timeout) {
+        /*
         try {
             Thread.sleep(timeout);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+         */
+        /*Implicit wait*/
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(timeout));
+
         Set<String> whNow = driver.getWindowHandles();
         Set<String> whThen = (Set<String>) vars.get("window_handles");
         if (whNow.size() > whThen.size()) {
