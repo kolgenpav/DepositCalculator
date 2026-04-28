@@ -17,34 +17,34 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class InitTest {
+class InitTest {
 
     private WebDriver driver;
     private Map<String, Object> vars;
     JavascriptExecutor js;
 
     @BeforeAll
-    public static void setupClass() {
+    static void setupClass() {
         WebDriverManager.chromedriver().setup();
     }
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         driver = new ChromeDriver();
         js = (JavascriptExecutor) driver;
-        vars = new HashMap<String, Object>();
+        vars = new HashMap<>();
     }
 
     @AfterEach
-    public void tearDown() {
+    void tearDown() {
         driver.quit();
     }
 
     @Test
-    public void initTest() {
+    void initTest() {
         driver.get("https://fin-calc.org.ua/ua/deposit/calculate/");
         vars.put("dSum", driver.findElement(By.id("sum")).getAttribute("value"));
-        assertEquals(vars.get("dSum").toString(), "25000");
+        assertEquals("25000", vars.get("dSum").toString());
         assertTrue(driver.findElement(By.id("i_scheme5")).isSelected());
         driver.findElement(By.id("submit")).click();
         vars.put("dSumRes", driver.findElement(By.cssSelector(".tresult:nth-child(7) tr:nth-child(2) span")).getText());

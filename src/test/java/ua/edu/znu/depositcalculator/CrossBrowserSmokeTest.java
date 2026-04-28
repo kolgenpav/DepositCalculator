@@ -17,18 +17,18 @@ import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CrossBrowserSmokeTest {
+class CrossBrowserSmokeTest {
 
     private WebDriver driver;
 
     @AfterEach
-    public void tearDown() {
+    void tearDown() {
         driver.quit();
     }
 
     @ParameterizedTest
     @ValueSource(strings = { "chrome", "firefox", "edge"})
-    public void smokeTest(String browserName) {
+    void smokeTest(String browserName) {
         driver = WebDriverManager.getInstance(browserName).create();
         driver.get("https://fin-calc.org.ua/ua/deposit/calculate/");
         WebElement sum = driver.findElement(By.id("sum"));
@@ -54,9 +54,9 @@ public class CrossBrowserSmokeTest {
                 .ignoring(NoSuchElementException.class);
 
         WebElement interestAmount = wait.until(ExpectedConditions
-                .presenceOfElementLocated(By.cssSelector(".finale > .right:nth-child(3)")));
+                .presenceOfElementLocated(By.cssSelector(".total > .right:nth-child(3)")));
         WebElement sumWithInterest = wait.until(ExpectedConditions
-                .presenceOfElementLocated(By.cssSelector(".finale > .right:nth-child(4)")));
+                .presenceOfElementLocated(By.cssSelector(".total > .right:nth-child(4)")));
 
 //        String interestAmount = driver.findElement(By.cssSelector(".finale > .right:nth-child(3)")).getText();
 //        String sumWithInterest = driver.findElement(By.cssSelector(".finale > .right:nth-child(4)")).getText();

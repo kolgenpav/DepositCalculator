@@ -13,6 +13,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.firefox.ProfilesIni;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
@@ -24,20 +28,34 @@ import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class SmokeTest {
+class BrowserProfileSmokeTest {
 
     private static WebDriver driver;
     private static Map<String, Object> vars;
     private static JavascriptExecutor js;
 
     @BeforeAll
-    static void setupClass() {
-        WebDriverManager.chromedriver().setup();
+    public static void setupClass() {
+        //Uncomment for Chrome
+        //TODO Starts Chrome with user profile, but does not run test -seems updated Chrome version (111.0.5563.147)
+        // does not supported by WebDriverManager (but without user profile test runs)
+        //Test ignored.
+        //org.openqa.selenium.SessionNotCreatedException: Could not start a new session.
+        // Response code 500. Message: unknown error: Chrome failed to start:
+        // exited normally.
+        //  (unknown error: DevToolsActivePort file doesn't exist)
         ChromeOptions options = new ChromeOptions();
-        /*Deprecated since Selenium 4.8.0*/
-//        options.setHeadless(true);
-        options.addArguments("--headless=new");
+        options.addArguments("user-data-dir="+"c:\\Users\\kgp\\AppData\\Local\\Google\\Chrome\\User Data");
+        WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver(options);
+        //Uncomment for Firefox
+//        ProfilesIni profileini = new ProfilesIni();
+//        FirefoxProfile profile = profileini.getProfile("default-release");
+//        FirefoxOptions options = new FirefoxOptions();
+//        options.setProfile(profile);
+//        WebDriverManager.firefoxdriver().setup();
+//        driver = new FirefoxDriver(options);
+
         js = (JavascriptExecutor) driver;
         vars = new HashMap<>();
         driver.manage().window().maximize();
@@ -85,8 +103,8 @@ class SmokeTest {
                 .presenceOfElementLocated(By.cssSelector(".total > .right:nth-child(4)")));
 
 /*
-        WebElement interestAmount = driver.findElement(By.cssSelector(".total > .right:nth-child(3)"));
-        WebElement sumWithInterest = driver.findElement(By.cssSelector(".total > .right:nth-child(4)"));
+        String interestAmount = driver.findElement(By.cssSelector(".finale > .right:nth-child(3)")).getText();
+        String sumWithInterest = driver.findElement(By.cssSelector(".finale > .right:nth-child(4)")).getText();
 */
         assertEquals("2750.04", interestAmount.getText());
         assertEquals("27750.04", sumWithInterest.getText());

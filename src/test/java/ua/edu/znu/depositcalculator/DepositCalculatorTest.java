@@ -17,7 +17,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class DepositCalculatorTest {
+class DepositCalculatorTest {
 
     private WebDriver driver;
     private Map<String, Object> vars;
@@ -28,12 +28,12 @@ public class DepositCalculatorTest {
     WebElement interest;
 
     @BeforeAll
-    public static void setupClass() {
+    static void setupClass() {
         WebDriverManager.chromedriver().setup();
     }
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         driver = new ChromeDriver();
         js = (JavascriptExecutor) driver;
         vars = new HashMap<>();
@@ -48,7 +48,7 @@ public class DepositCalculatorTest {
     }
 
     @AfterEach
-    public void tearDown() {
+    void tearDown() {
         driver.quit();
     }
 
@@ -58,15 +58,15 @@ public class DepositCalculatorTest {
             "25000, 12, 11, i_scheme2, 2865.54, 27865.54",
             "25000, 12, 11, i_scheme5, 2750.04, 27750.04"
     })
-    public void positiveTest(String dSum, String dTerm, String dInterest, String schemeId,
+    void positiveTest(String dSum, String dTerm, String dInterest, String schemeId,
                                           String interestAmounExpResult, String sumWithInterestExpResult) {
         sum.sendKeys(dSum);
         term.sendKeys(dTerm);
         interest.sendKeys(dInterest);
         driver.findElement(By.id(schemeId)).click();
         driver.findElement(By.id("submit")).click();
-        String interestAmount = driver.findElement(By.cssSelector(".finale > .right:nth-child(3)")).getText();
-        String sumWithInterest = driver.findElement(By.cssSelector(".finale > .right:nth-child(4)")).getText();
+        String interestAmount = driver.findElement(By.cssSelector(".total > .right:nth-child(3)")).getText();
+        String sumWithInterest = driver.findElement(By.cssSelector(".total > .right:nth-child(4)")).getText();
         assertEquals(interestAmounExpResult, interestAmount);
         assertEquals(sumWithInterestExpResult, sumWithInterest);
     }
@@ -81,7 +81,7 @@ public class DepositCalculatorTest {
             "25000, 256, 0.000000999999999999999, i_scheme5",
             "-1, -1, 1000.0000000000001, i_scheme1",
     })
-    public void negativeTest(String dSum, String dTerm, String dInterest, String schemeId) {
+    void negativeTest(String dSum, String dTerm, String dInterest, String schemeId) {
         sum.sendKeys(dSum);
         term.sendKeys(dTerm);
         interest.sendKeys(dInterest);
