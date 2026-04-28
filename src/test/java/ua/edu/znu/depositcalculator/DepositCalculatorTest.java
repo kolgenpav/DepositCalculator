@@ -59,7 +59,7 @@ class DepositCalculatorTest {
             "25000, 12, 11, i_scheme5, 2750.04, 27750.04"
     })
     void positiveTest(String dSum, String dTerm, String dInterest, String schemeId,
-                                          String interestAmounExpResult, String sumWithInterestExpResult) {
+                      String interestAmounExpResult, String sumWithInterestExpResult) {
         sum.sendKeys(dSum);
         term.sendKeys(dTerm);
         interest.sendKeys(dInterest);
@@ -89,7 +89,7 @@ class DepositCalculatorTest {
         driver.findElement(By.id("submit")).click();
         String expErrorMessage = "Введені значення для розрахунку некоректні. " +
                 "Поля з помилками виділені кольором. Виправте дані в зазначених полях і повторіть розрахунок.";
-        String errorMessage = driver.findElement(By.cssSelector("#errors > p")).getText();
+        String errorMessage = driver.findElement(By.cssSelector(".error")).getText();
         assertEquals(expErrorMessage, errorMessage);
     }
 }
